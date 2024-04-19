@@ -1,12 +1,7 @@
-
-/*
- * Copy s2 to s1, truncating or null-padding to always copy n bytes
- * return s1
- */
-
-strncpy (s1, s2, n)
-char *s1, *s2;
-int n;
+// Copy s2 to s1, truncating or null-padding
+// to always copy n bytes
+// return s1
+strncpy (char *s1, char *s2, int n)
 {
     register i;
     register char *os1;
@@ -19,5 +14,4 @@ int n;
             return (os1);
         }
     return (os1);
-
 }

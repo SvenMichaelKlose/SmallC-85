@@ -1,20 +1,13 @@
-
-/*
- * File function.c: 2.1 (83/03/20,16:02:04)
- */
-
 #include <stdio.h>
 #include "defs.h"
 #include "data.h"
 
 int argtop;
 
-/**
- * begin a function
- * called from "parse", this routine tries to make a function out
- * of what follows
- * modified version.  p.l. woods
- */
+// begin a function
+// called from "parse", this routine tries to make a function out
+// of what follows
+// modified version.  p.l. woods
 newfunc ()
 {
     char n[NAMESIZE];

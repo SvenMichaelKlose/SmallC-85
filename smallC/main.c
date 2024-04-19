@@ -1,8 +1,3 @@
-
-/*
- * File main.c: 2.7 (Rev.1) (17/5/21,1:38:54)
- */
-
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -11,9 +6,11 @@
 
 FILE *logFile = NULL;
 
-char finame[INCLSIZ + 1][20];   // global input filenames for error messages 
+// global input filenames for error messages 
+char finame[INCLSIZ + 1][20];
 
-int srcln[INCLSIZ + 1] = { 0, 0, 0, 0 };        // source file line counters for error messages 
+// source file line counters for error messages 
+int srcln[INCLSIZ + 1] = { 0, 0, 0, 0 };
 
 // Simple oputs function to replace the ugly fputs(foo, stdout) 
 
@@ -35,7 +32,8 @@ main (int argc, char *argv[])
     aflag = 1;
     uflag = 0;
 
-    setbuf (stdout, NULL);      // disable stdout buffering *//* why exactly? 
+    // disable stdout buffering *//* why exactly? 
+    setbuf (stdout, NULL);
 
     for (i = 1; i < argc; i++) {
         param = argv[i];
@@ -113,12 +111,14 @@ main (int argc, char *argv[])
         }
     }
 
-    smacptr = macptr;           // command line defined macros -d 
+    // command line defined macros -d 
+    smacptr = macptr;
     /*if (!param) {
        usage();
        } */
     if (i == argc) {
-        compile (NULL);         // training mode - read code from stdin 
+        // training mode - read code from stdin 
+        compile (NULL);
         exit (0);
     }
 
@@ -135,15 +135,13 @@ main (int argc, char *argv[])
     exit (errs != 0);
 }
 
-/**
- * compile one file if filename is NULL redirect do to stdin/stdout
- * @param file filename
- * @return
- */
+// compile one file if filename is NULL redirect do to stdin/stdout
 compile (char *file)
 {
-    strcpy (finame[0], file);   // copy actual filename to filename array 
-    srcln[0] = 0;               // reset source line counter 
+    // copy actual filename to filename array 
+    strcpy (finame[0], file);
+    // reset source line counter 
+    srcln[0] = 0;
     if (file == NULL || filename_typeof (file) == 'c') {
         global_table_index = 0;
         local_table_index = NUMBER_OF_GLOBALS;
@@ -204,8 +202,6 @@ compile (char *file)
 #endif
 }
 
-// Writes the frontend version to the output 
-
 frontend_version ()
 {
     output_line ("Front End (2.7,84/11/28)");
@@ -213,10 +209,6 @@ frontend_version ()
     output_line ("Front End for ASXXXX (2.8,13/01/20)");
 }
 
-/**
- * prints usage
- * @return exits the execution
- */
 usage ()
 {
     oputs
@@ -239,11 +231,9 @@ usage ()
     exit (1);
 }
 
-/**
- * process all input text
- * at this level, only static declarations, defines, includes,
- * and function definitions are legal.
- */
+// process all input text
+// at this level, only static declarations, defines, includes,
+// and function definitions are legal.
 parse ()
 {
     while (!feof (input)) {
@@ -267,49 +257,41 @@ parse ()
     }
 }
 
-/**
- * parse top level declarations
- * @param stclass storage
- * @param mtag
- * @param is_struct
- * @return
- */
+// parse top level declarations
 do_declarations (int stclass,
                  TAG_SYMBOL * mtag, int is_struct)
 {
     int type;
-    int otag;                   // tag of struct object being declared 
-    int sflag;                  // TRUE for struct definition, zero for union 
+    // tag of struct object being declared 
+    int otag;
+    // TRUE for struct definition, zero for union 
+    int sflag;
     char sname[NAMESIZE];
 
     blanks ();
     if ((sflag = amatch ("struct", 6))
         || amatch ("union", 5)) {
-        if (symname (sname) == 0) {     // legal name ? 
+        // legal name ? 
+        if (symname (sname) == 0)
             illname ();
-        }
         // structure not previously defined 
-        if ((otag = find_tag (sname)) == -1) {
+        if ((otag = find_tag (sname)) == -1)
             otag = define_struct (sname, stclass, sflag);
-        }
         declare_global (STRUCT, stclass,
                         mtag, otag, is_struct);
-    } else if (type = get_type ()) {
+    } else if (type = get_type ())
         declare_global (type, stclass,
                         mtag, NULL_TAG, is_struct);
-    } else if (stclass == PUBLIC) {
+    else if (stclass == PUBLIC)
         return (0);
-    } else {
+    else
         declare_global (CINT, stclass,
                         mtag, NULL_TAG, is_struct);
-    }
     need_semicolon ();
     return (1);
 }
 
-/**
- * dump the literal pool
- */
+// dump the literal pool
 dumplits ()
 {
     int j, k;
@@ -333,9 +315,7 @@ dumplits ()
     }
 }
 
-/**
- * dump all static variables
- */
+// dump all static variables
 dumpglbs ()
 {
     int dim, i, list_size, line_count, value;
@@ -406,11 +386,7 @@ dumpglbs ()
     }
 }
 
-/**
- * dump struct data
- * @param symbol struct variable
- * @param position position of the struct in the array, or zero
- */
+// dump struct data
 dump_struct (SYMBOL * symbol, int position)
 {
     int i, number_of_members, value;
@@ -454,9 +430,6 @@ dump_struct (SYMBOL * symbol, int position)
     }
 }
 
-/**
- * report errors
- */
 errorsummary ()
 {
     if (ncmp)
@@ -485,11 +458,8 @@ errorsummary ()
         pl ("Error(s)");
 }
 
-/**
- * test for C or similar filename, e.g. xxxxx.x, tests the dot at end-1 postion
- * @param s the filename
- * @return the last char if it contains dot, space otherwise
- */
+// test for C or similar filename, e.g. xxxxx.x, tests the dot at end-1 postion
+// @return the last char if it contains dot, space otherwise
 filename_typeof (char *s)
 {
     s += strlen (s) - 2;

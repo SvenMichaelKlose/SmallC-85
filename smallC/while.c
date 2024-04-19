@@ -1,10 +1,3 @@
-
-//      File while.c: 2.1 (83/03/20,16:02:22) 
-
-/*% cc -O -c %
- *
- */
-
 #include <stdio.h>
 #include "defs.h"
 #include "data.h"
@@ -74,9 +67,8 @@ readswitch ()
 
     if (ptr = readwhile ()) {
         //if (ptr[WSTYP] == WSSWITCH) 
-        if (ptr->type == WSSWITCH) {
+        if (ptr->type == WSSWITCH)
             return (ptr);
-        }
     }
     return (0);
 }

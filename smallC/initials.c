@@ -3,9 +3,7 @@
 #include "defs.h"
 #include "data.h"
 
-/**
- * erase the data storage
- */
+// erase the data storage
 create_initials ()
 {
     /*int i;
@@ -20,22 +18,14 @@ create_initials ()
        } */
 }
 
-/**
- * add new symbol to table, initialise begin position in data array
- * @param symbol_name
- * @param type
- */
+// add new symbol to table, initialise begin position in data array
 add_symbol_initials (char *symbol_name, char type)
 {
     strcpy (initials_table[initials_idx].name, symbol_name);
     initials_table[initials_idx].type = type;
 }
 
-/**
- * find symbol in table, count position in data array
- * @param symbol_name
- * @return
- */
+// find symbol in table, count position in data array
 int
 find_symbol_initials (char *symbol_name)
 {
@@ -62,13 +52,7 @@ find_symbol_initials (char *symbol_name)
     return result;
 }
 
-/**
- * add data to table for given symbol
- * @param symbol_name
- * @param type
- * @param value
- * @param tag
- */
+// add data to table for given symbol
 add_data_initials (char *symbol_name,
                    int type, int value, TAG_SYMBOL * tag)
 {
@@ -110,11 +94,7 @@ add_data_initials (char *symbol_name,
     }
 }
 
-/**
- * get number of data items for given symbol
- * @param symbol_name
- * @return
- */
+// get number of data items for given symbol
 int
 get_size (char *symbol_name)
 {
@@ -125,13 +105,8 @@ get_size (char *symbol_name)
     return result;
 }
 
-/**
- * get item at position
- * @param symbol_name
- * @param position
- * @param itag index of tag in tag table
- * @return
- */
+// get item at position
+// @param itag index of tag in tag table
 int
 get_item_at (char *symbol_name,
              int position, TAG_SYMBOL * tag)

@@ -1,6 +1,6 @@
 extern char *brkend;
-sbrk (incr)
-char *incr;
+
+sbrk (char *incr)
 {
     char *stktop;
 
@@ -13,5 +13,4 @@ char *incr;
         return (stktop);
     } else
         return (-1);
-
 }

@@ -1,18 +1,9 @@
-
-/*
- * File struct.c: (12/12/12,21:31:33)
- */
-
 #include <stdio.h>
 #include <string.h>
 #include "defs.h"
 #include "data.h"
 
-/**
- * look up a tag in tag table by name
- * @param sname
- * @return index
- */
+// look up a tag in tag table by name
 int
 find_tag (char *sname)
 {
@@ -20,20 +11,15 @@ find_tag (char *sname)
 
     index = 0;
     while (index < tag_table_index) {
-        if (astreq (sname, tag_table[index].name, NAMEMAX)) {
+        if (astreq (sname, tag_table[index].name, NAMEMAX))
             return index;
-        }
         ++index;
     }
     return -1;
 }
 
-/**
- * determine if 'sname' is a member of the struct with tag 'tag'
- * @param tag
- * @param sname
- * @return pointer to member symbol if it is, else 0
- */
+// determine if 'sname' is a member of the struct with tag 'tag'
+// @return pointer to member symbol if it is, else 0
 SYMBOL *
 find_member (TAG_SYMBOL * tag, char *sname)
 {
@@ -51,15 +37,8 @@ find_member (TAG_SYMBOL * tag, char *sname)
     return 0;
 }
 
-/**
- * add new structure member to table
- * @param sname
- * @param identity - variable, array, pointer, function
- * @param typ
- * @param offset
- * @param storage
- * @return
- */
+// add new structure member to table
+// @param identity - variable, array, pointer, function
 add_member (char *sname, char identity,
             char type, int offset,
             int storage_class, int member_size)

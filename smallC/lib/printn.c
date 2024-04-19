@@ -1,7 +1,8 @@
 #include <stdio.h>
 
-// print a number in any radish 
 #define DIGARR "0123456789ABCDEF"
+
+// print a number in any radix
 printn (number, radix, file)
 int number, radix;
 FILE *file;

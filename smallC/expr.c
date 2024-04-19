@@ -1,15 +1,8 @@
-
-/*
- * File expr.c: 2.2 (83/06/21,11:24:26)
- */
-
 #include <stdio.h>
 #include "defs.h"
 #include "data.h"
 
-/**
- * unsigned operand ?
- */
+// unsigned operand ?
 nosign (LVALUE * is)
 {
     SYMBOL *ptr;
@@ -22,13 +15,9 @@ nosign (LVALUE * is)
     return 0;
 }
 
-/**
- * lval.symbol - symbol table address, else 0 for constant
- * lval.indirect - type indirect object to fetch, else 0 for static object
- * lval.ptr_type - type pointer or array, else 0
- * @param comma
- * @return
- */
+// lval.symbol - symbol table address, else 0 for constant
+// lval.indirect - type indirect object to fetch, else 0 for static object
+// lval.ptr_type - type pointer or array, else 0
 expression (int comma)
 {
     LVALUE lval;
@@ -43,11 +32,7 @@ expression (int comma)
     } while (match (","));
 }
 
-/**
- * assignment operators
- * @param lval
- * @return
- */
+// Asignment operators.
 hier1 (LVALUE * lval)
 {
     int k;
@@ -118,24 +103,21 @@ hier1 (LVALUE * lval)
                 if (nosign (lval)
                     || nosign (lval2)) {
                     gen_udiv ();
-                } else {
+                } else
                     gen_div ();
-                }
                 break;
             case '%':
                 if (nosign (lval)
                     || nosign (lval2)) {
                     gen_umod ();
-                } else {
+                } else
                     gen_mod ();
-                }
                 break;
             case '>':
-                if (nosign (lval)) {
+                if (nosign (lval))
                     gen_logical_shift_right ();
-                } else {
+                else
                     gen_arithm_shift_right ();
-                }
                 break;
             case '<':
                 gen_arithm_shift_left ();
@@ -157,11 +139,8 @@ hier1 (LVALUE * lval)
     }
 }
 
-/**
- * processes ? : expression
- * @param lval
- * @return 0 or 1, fetch or no fetch
- */
+// '? :' expression.
+// Return 0 or 1, fetch or no fetch.
 hier1a (LVALUE * lval)
 {
     int k, lab1, lab2;
@@ -197,11 +176,7 @@ hier1a (LVALUE * lval)
         return (0);
 }
 
-/**
- * processes logical or ||
- * @param lval
- * @return 0 or 1, fetch or no fetch
- */
+// Logical OR '||'.
 hier1b (LVALUE * lval)
 {
     int k, lab;
@@ -226,11 +201,7 @@ hier1b (LVALUE * lval)
         return (0);
 }
 
-/**
- * processes logical and &&
- * @param lval
- * @return 0 or 1, fetch or no fetch
- */
+// Logical AND '&&'.
 hier1c (LVALUE * lval)
 {
     int k, lab;
@@ -255,11 +226,7 @@ hier1c (LVALUE * lval)
         return (0);
 }
 
-/**
- * processes bitwise or |
- * @param lval
- * @return 0 or 1, fetch or no fetch
- */
+// Bit-wise OR '|'.
 hier2 (LVALUE * lval)
 {
     int k;
@@ -267,14 +234,16 @@ hier2 (LVALUE * lval)
 
     k = hier3 (lval);
     blanks ();
-    if ((ch () != '|') | (nch () == '|') | (nch ()
-                                            == '='))
+    if ((ch () != '|')
+        | (nch () == '|')
+        | (nch () == '='))
         return (k);
     if (k & FETCH)
         k = rvalue (lval, k);
     FOREVER {
-        if ((ch () == '|') & (nch () !=
-                              '|') & (nch () != '=')) {
+        if ((ch () == '|')
+            & (nch () != '|')
+            & (nch () != '=')) {
             inbyte ();
             gen_push (k);
             k = hier3 (lval2);
@@ -287,11 +256,7 @@ hier2 (LVALUE * lval)
     }
 }
 
-/**
- * processes bitwise exclusive or
- * @param lval
- * @return 0 or 1, fetch or no fetch
- */
+// Bit-wise exclusive OR '^'.
 hier3 (LVALUE * lval)
 {
     int k;
@@ -317,11 +282,7 @@ hier3 (LVALUE * lval)
     }
 }
 
-/**
- * processes bitwise and &
- * @param lval
- * @return 0 or 1, fetch or no fetch
- */
+// Bit-wise AND '&'.
 hier4 (LVALUE * lval)
 {
     int k;
@@ -350,11 +311,7 @@ hier4 (LVALUE * lval)
 
 }
 
-/**
- * processes equal and not equal operators
- * @param lval
- * @return 0 or 1, fetch or no fetch
- */
+// Equal and not equal
 hier5 (LVALUE * lval)
 {
     int k;
@@ -385,11 +342,7 @@ hier5 (LVALUE * lval)
 
 }
 
-/**
- * comparison operators
- * @param lval
- * @return 0 or 1, fetch or no fetch
- */
+// comparison
 hier6 (LVALUE * lval)
 {
     int k;
@@ -458,14 +411,9 @@ hier6 (LVALUE * lval)
             return (0);
         blanks ();
     }
-
 }
 
-/**
- * bitwise left, right shift
- * @param lval
- * @return 0 or 1, fetch or no fetch
- */
+// Shifts
 hier7 (LVALUE * lval)
 {
     int k;
@@ -505,14 +453,9 @@ hier7 (LVALUE * lval)
             return (0);
         blanks ();
     }
-
 }
 
-/**
- * addition, subtraction
- * @param lval
- * @return 0 or 1, fetch or no fetch
- */
+// addition, subtraction
 hier8 (LVALUE * lval)
 {
     int k;
@@ -568,11 +511,7 @@ hier8 (LVALUE * lval)
     }
 }
 
-/**
- * multiplication, division, modulus
- * @param lval
- * @return 0 or 1, fetch or no fetch
- */
+// multiplication, division, modulus
 hier9 (LVALUE * lval)
 {
     int k;
@@ -622,11 +561,7 @@ hier9 (LVALUE * lval)
 
 }
 
-/**
- * increment, decrement, negation operators
- * @param lval
- * @return 0 or 1, fetch or no fetch
- */
+// increment, decrement, negation operators
 hier10 (LVALUE * lval)
 {
     int k;
@@ -700,9 +635,8 @@ hier10 (LVALUE * lval)
         ptr = lval->symbol;
         lval->ptr_type = ptr->type;
         if (lval->indirect) {
-            if (k & DE_REG) {
+            if (k & DE_REG)
                 gen_swap ();
-            }
             return (HL_REG);
         }
         // global and non-array 
@@ -743,11 +677,7 @@ hier10 (LVALUE * lval)
 
 }
 
-/**
- * array subscripting
- * @param lval
- * @return 0 or 1, fetch or no fetch
- */
+// Array subscription
 hier11 (LVALUE * lval)
 {
     int direct, k;
@@ -768,9 +698,9 @@ hier11 (LVALUE * lval)
                 junk ();
                 needbrack ("]");
                 return (0);
-            } else if (ptr->identity == POINTER) {
+            } else if (ptr->identity == POINTER)
                 k = rvalue (lval, k);
-            } else if (ptr->identity != ARRAY) {
+            else if (ptr->identity != ARRAY) {
                 error ("can't subscript");
                 k = 0;
             }
@@ -785,14 +715,13 @@ hier11 (LVALUE * lval)
             lval->ptr_type = 0;
             k = FETCH | HL_REG;
         } else if (match ("(")) {
-            if (ptr == 0) {
+            if (ptr == 0)
                 callfunction (0);
-            } else if (ptr->identity != FUNCTION) {
+            else if (ptr->identity != FUNCTION) {
                 k = rvalue (lval, k);
                 callfunction (0);
-            } else {
+            } else
                 callfunction (ptr);
-            }
             lval->symbol = 0;
             k = 0;
         } else if ((direct = match ("."))
@@ -813,9 +742,8 @@ hier11 (LVALUE * lval)
                 && direct == 0) {
                 k = rvalue (lval, k);
             }
-            if (k == DE_REG) {
+            if (k == DE_REG)
                 gen_swap ();
-            }
             // move pointer from struct begin to struct member 
 
             add_offset (ptr->offset);
@@ -824,9 +752,8 @@ hier11 (LVALUE * lval)
             lval->indirect = ptr->type;
             lval->ptr_type = 0;
             lval->tagsym = NULL_TAG;
-            if (ptr->type == STRUCT) {
+            if (ptr->type == STRUCT)
                 lval->tagsym = &tag_table[ptr->tagidx];
-            }
             if (ptr->identity == POINTER) {
                 lval->indirect = CINT;
                 lval->ptr_type = ptr->type;
@@ -839,9 +766,8 @@ hier11 (LVALUE * lval)
                 lval->ptr_type = ptr->type;
                 //lval->val_type = CINT; 
                 k = 0;
-            } else {
+            } else
                 k = FETCH | HL_REG;
-            }
         } else
             return k;
         }

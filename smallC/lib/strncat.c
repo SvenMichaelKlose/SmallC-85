@@ -1,9 +1,6 @@
-
-/*
- * Concatenate s2 on the end of s1.  S1's space must be large enough.
- * At most n characters are moved.
- * Return s1.
- */
+// Concatenate s2 on the end of s1.  S1's space must be large enough.
+// At most n characters are moved.
+// Return s1.
 
 strncat (s1, s2, n)
 register char *s1, *s2;
@@ -20,5 +17,4 @@ register n;
             break;
         }
     return (os1);
-
 }

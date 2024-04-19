@@ -1,37 +1,21 @@
-
-//      File gen.c: 2.1 (83/03/20,16:02:06) 
-
-/*% cc -O -c %
- *
- */
-
 #include <stdio.h>
 #include "defs.h"
 #include "data.h"
 
-/**
- * return next available internal label number
- */
+// return next available internal label number
 getlabel ()
 {
     return (nxtlab++);
 }
 
-/**
- * print specified number as label
- * @param label
- */
+// print specified number as label
 print_label (int label)
 {
     output_label_prefix ();
     output_decimal (label);
 }
 
-/**
- * glabel - generate label
- * not used ?
- * @param lab label number
- */
+// glabel - generate label. not used?
 glabel (char *lab)
 {
     output_string (lab);
@@ -39,11 +23,7 @@ glabel (char *lab)
     newline ();
 }
 
-/**
- * gnlabel - generate numeric label
- * @param nlab label number
- * @return 
- */
+// gnlabel - generate numeric label
 generate_label (int nlab)
 {
     print_label (nlab);
@@ -51,11 +31,7 @@ generate_label (int nlab)
     newline ();
 }
 
-/**
- * outputs one byte
- * @param c
- * @return 
- */
+// output one byte
 output_byte (char c)
 {
     if (c == 0)
@@ -64,11 +40,7 @@ output_byte (char c)
     return (c);
 }
 
-/**
- * outputs a string
- * @param ptr the string
- * @return 
- */
+// output string
 output_string (char ptr[])
 {
     int k;
@@ -76,52 +48,33 @@ output_string (char ptr[])
     while (output_byte (ptr[k++]));
 }
 
-/**
- * outputs a tab
- * @return 
- */
+// outputs tab
 print_tab ()
 {
     output_byte ('\t');
 }
 
-/**
- * output line
- * @param ptr
- * @return 
- */
+// output line
 output_line (char ptr[])
 {
     output_with_tab (ptr);
     newline ();
 }
 
-/**
- * tabbed output
- * @param ptr
- * @return 
- */
+// tabbed output
 output_with_tab (char ptr[])
 {
     print_tab ();
     output_string (ptr);
 }
 
-/**
- * output decimal number
- * @param number
- * @return 
- */
+// output decimal number
 output_decimal (int number)
 {
     fprintf (output, "%d", number);
 }
 
-/**
- * stores values into memory
- * @param lval
- * @return 
- */
+// stores values into memory
 store (LVALUE * lval)
 {
     if (lval->indirect == 0)
@@ -139,12 +92,9 @@ rvalue (LVALUE * lval, int reg)
     return HL_REG;
 }
 
-/**
- * parses test part "(expression)" input and generates assembly for jump
- * @param label
- * @param ft : false - test jz, true test jnz
- * @return 
- */
+// parses test part "(expression)" input and generates assembly for jump
+// @param label
+// @param ft : false - test jz, true test jnz
 test (int label, int ft)
 {
     needbrack ("(");
@@ -153,13 +103,7 @@ test (int label, int ft)
     gen_test_jump (label, ft);
 }
 
-/**
- * scale constant depending on type
- * @param type
- * @param otag
- * @param size
- * @return 
- */
+// scale constant depending on type
 scale_const (int type, int otag, int *size)
 {
     switch (type) {

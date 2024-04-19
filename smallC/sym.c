@@ -1,22 +1,12 @@
-
-/*
- * File sym.c: 2.1 (83/03/20,16:02:19)
- */
-
 #include <stdio.h>
 #include "defs.h"
 #include "data.h"
 
-/**
- * declare a static variable
- * @param type
- * @param storage
- * @param mtag tag of struct whose members are being declared, or zero
- * @param otag tag of struct object being declared. only matters if mtag is
- *             non-zero
- * @param is_struct struct or union or no meaning
- * @return
- */
+// declare a static variable
+// @param mtag tag of struct whose members are being declared, or zero
+// @param otag tag of struct object being declared. only matters if mtag is
+//             non-zero
+// @param is_struct struct or union or no meaning
 declare_global (int type, int storage,
                 TAG_SYMBOL * mtag, int otag, int is_struct)
 {
@@ -95,23 +85,18 @@ declare_global (int type, int storage,
     }
 }
 
-/**
- * initialize global objects
- * @param symbol_name
- * @param type char or integer or struct
- * @param identity
- * @param dim
- * @return 1 if variable is initialized
- */
+// initialize global objects
+// @param type char or integer or struct
+// @return 1 if variable is initialized
 int
 initials (char *symbol_name, int type,
           int identity, int dim, int otag)
 {
     int dim_unknown = 0;
     litptr = 0;
-    if (dim == 0) {             // allow for xx[] = {..}; declaration 
+    // allow for xx[] = {..}; declaration 
+    if (dim == 0)
         dim_unknown = 1;
-    }
     if (!(type & CCHAR)
         && !(type & CINT)
         && !(type == STRUCT)) {
@@ -144,26 +129,21 @@ initials (char *symbol_name, int type,
                             dim_unknown++;
                         }
                     }
-                    if (match (",") == 0) {
+                    if (match (",") == 0)
                         break;
-                    }
                 }
                 if (--dim_unknown == 0)
                     identity = POINTER;
             }
             needbrack ("}");
             // single constant 
-        } else {
+        } else
             init (symbol_name, type, identity, &dim, 0);
-        }
     }
     return identity;
 }
 
-/**
- * initialise structure
- * @param tag
- */
+// initialise structure
 struct_init (TAG_SYMBOL * tag, char *symbol_name)
 {
     int dim;
@@ -189,22 +169,13 @@ struct_init (TAG_SYMBOL * tag, char *symbol_name)
     }
 }
 
-/**
- * evaluate one initializer, add data to table
- * @param symbol_name
- * @param type
- * @param identity
- * @param dim
- * @param tag
- * @return
- */
+// evaluate one initializer, add data to table
 init (char *symbol_name, int type,
       int identity, int *dim, TAG_SYMBOL * tag)
 {
     int value, number_of_chars;
-    if (identity == POINTER) {
+    if (identity == POINTER)
         error ("cannot assign to pointer");
-    }
     if (quoted_string (&value)) {
         if ((identity == VARIABLE)
             || !(type & CCHAR))
@@ -223,20 +194,15 @@ init (char *symbol_name, int type,
     } else if (quoted_char (&value)) {
         add_data_initials (symbol_name, CCHAR, value, tag);
         *dim = *dim - 1;
-    } else {
+    } else
         return 0;
-    }
     return 1;
 }
 
-/**
- * declare local variables
- * works just like "declglb", but modifies machine stack and adds
- * symbol table entry with appropriate stack offset to find it again
- * @param typ
- * @param stclass
- * @param otag index of tag in tag_table
- */
+// declare local variables
+// works just like "declglb", but modifies machine stack and adds
+// symbol table entry with appropriate stack offset to find it again
+// @param otag index of tag in tag_table
 declare_local (int typ, int stclass, int otag)
 {
     int k, j;
@@ -258,11 +224,10 @@ declare_local (int typ, int stclass, int otag)
                 k = needsub ();
                 if (k) {
                     j = ARRAY;
-                    if (typ & CINT) {
+                    if (typ & CINT)
                         k = k * INTSIZE;
-                    } else if (typ == STRUCT) {
+                    else if (typ == STRUCT)
                         k = k * tag_table[otag].size;
-                    }
                 } else {
                     j = POINTER;
                     k = INTSIZE;
@@ -289,20 +254,18 @@ declare_local (int typ, int stclass, int otag)
                 // local structs need their tagidx set 
                 current_symbol_table_idx
                     = add_local (sname, j, typ, stkp, AUTO);
-                if (typ == STRUCT) {
+                if (typ == STRUCT)
                     symbol_table
                         [current_symbol_table_idx].tagidx =
                         otag;
-                }
             } else {
                 // local structs need their tagidx set 
                 current_symbol_table_idx
                     = add_local (sname, j, typ, k, LSTATIC);
-                if (typ == STRUCT) {
+                if (typ == STRUCT)
                     symbol_table
                         [current_symbol_table_idx].tagidx =
                         otag;
-                }
             }
             break;
         }
@@ -311,10 +274,7 @@ declare_local (int typ, int stclass, int otag)
     }
 }
 
-/**
- * get required array size. [xx]
- * @return array size
- */
+// get required array size.
 needsub ()
 {
     int num[1];
@@ -333,11 +293,7 @@ needsub ()
     return (num[0]);
 }
 
-/**
- * search global table for given symbol name
- * @param sname
- * @return table index
- */
+// search global table for given symbol name
 int
 find_global (char *sname)
 {
@@ -352,11 +308,7 @@ find_global (char *sname)
     return (-1);
 }
 
-/**
- * search local table for given symbol name
- * @param sname
- * @return table index
- */
+// search local table for given symbol name
 int
 find_locale (char *sname)
 {
@@ -371,15 +323,8 @@ find_locale (char *sname)
     return (-1);
 }
 
-/**
- * add new symbol to global table
- * @param sname
- * @param identity
- * @param type
- * @param offset size in bytes
- * @param storage
- * @return new index
- */
+// add new symbol to global table
+// @return new index
 int
 add_global (char *sname, int identity,
             int type, int offset, int storage)
@@ -406,15 +351,8 @@ add_global (char *sname, int identity,
     return (current_symbol_table_idx);
 }
 
-/**
- * add new symbol to local table
- * @param sname
- * @param identity
- * @param type
- * @param offset size in bytes
- * @param storage_class
- * @return
- */
+// add new symbol to local table
+// @param offset size in bytes
 int
 add_local (char *sname, int identity,
            int type, int offset, int storage_class)
@@ -454,9 +392,7 @@ add_local (char *sname, int identity,
     return (current_symbol_table_idx);
 }
 
-/**
- * test if next input string is legal symbol name
- */
+// test if next input string is legal symbol name
 symname (char *sname)
 {
     int k;
@@ -471,19 +407,13 @@ symname (char *sname)
     return (1);
 }
 
-/**
- * print error message
- */
+// print error message
 illname ()
 {
     error ("illegal symbol name");
 }
 
-/**
- * print error message
- * @param symbol_name
- * @return
- */
+// print error message
 multidef (char *symbol_name)
 {
     error ("already defined");

@@ -1,8 +1,3 @@
-
-/*
- * File stmt.c: 2.1 (83/03/20,16:02:17)
- */
-
 #include <stdio.h>
 #include "defs.h"
 #include "data.h"
@@ -34,9 +29,7 @@ statement (int func)
     return (lastst);
 }
 
-/**
- * declaration
- */
+// declaration
 statement_declare ()
 {
     if (amatch ("register", 8))
@@ -51,26 +44,24 @@ statement_declare ()
     return (YES);
 }
 
-/**
- * local declarations
- * @param stclass
- * @return
- */
+// local declarations
 do_local_declares (int stclass)
 {
     int type = 0;
-    int otag;                   // tag of struct object being declared 
-    int sflag;                  // TRUE for struct definition, zero for union 
+    // tag of struct object being declared 
+    int otag;
+    // TRUE for struct definition, zero for union 
+    int sflag;
     char sname[NAMESIZE];
     blanks ();
     if ((sflag = amatch ("struct", 6))
         || amatch ("union", 5)) {
-        if (symname (sname) == 0) {     // legal name ? 
+        // legal name ? 
+        if (symname (sname) == 0)
             illname ();
-        }
-        if ((otag = find_tag (sname)) == -1) {  // structure not previously defined 
+        // structure not previously defined 
+        if ((otag = find_tag (sname)) == -1)
             otag = define_struct (sname, stclass, sflag);
-        }
         declare_local (STRUCT, stclass, otag);
     } else if (type = get_type ()) {
         declare_local (type, stclass, -1);
@@ -83,9 +74,7 @@ do_local_declares (int stclass)
     return (1);
 }
 
-/**
- * non-declaration statement
- */
+// non-declaration statement
 do_statement ()
 {
     if (amatch ("if", 2)) {
@@ -165,9 +154,7 @@ do_compound (int func)
     ncmp--;
 }
 
-/**
- * "if" statement
- */
+// "if"
 doif ()
 {
     int fstkp, flab1, flab2;
@@ -192,9 +179,7 @@ doif ()
     generate_label (flab2);
 }
 
-/**
- * "while" statement
- */
+// "while"
 dowhile ()
 {
     WHILE ws;
@@ -215,9 +200,7 @@ dowhile ()
     delwhile ();
 }
 
-/**
- * "do" statement
- */
+// "do"
 dodo ()
 {
     WHILE ws;
@@ -243,9 +226,7 @@ dodo ()
     delwhile ();
 }
 
-/**
- * "for" statement
- */
+// "for" statement
 dofor ()
 {
     WHILE ws;
@@ -289,9 +270,7 @@ dofor ()
     delwhile ();
 }
 
-/**
- * "switch" statement
- */
+// "switch" statement
 doswitch ()
 {
     WHILE ws;
@@ -311,7 +290,8 @@ doswitch ()
     needbrack ("(");
     expression (YES);
     needbrack (")");
-    stkp = stkp + INTSIZE;      // '?case' will adjust the stack 
+    // '?case' will adjust the stack 
+    stkp = stkp + INTSIZE;
     gen_jump_case ();
     statement (NO);
     ptr = readswitch ();
@@ -324,9 +304,7 @@ doswitch ()
     delwhile ();
 }
 
-/**
- * "case" label
- */
+// "case" label
 docase ()
 {
     int val;
@@ -343,9 +321,7 @@ docase ()
         error ("no active switch");
 }
 
-/**
- * "default" label
- */
+// "default" label
 dodefault ()
 {
     WHILE *ptr;
@@ -360,9 +336,7 @@ dodefault ()
         error ("no active switch");
 }
 
-/**
- * "return" statement
- */
+// "return"
 doreturn ()
 {
     if (endst () == 0)
@@ -370,9 +344,7 @@ doreturn ()
     gen_jump (fexitlab);
 }
 
-/**
- * "break" statement
- */
+// "break"
 dobreak ()
 {
     WHILE *ptr;
@@ -383,12 +355,10 @@ dobreak ()
     gen_jump (ptr->while_exit);
 }
 
-/**
- * "continue" statement
- */
+// "continue"
 docont ()
 {
-    WHILE *ptr;                 //int     *ptr; 
+    WHILE *ptr;
 
     if ((ptr = findwhile ()) == 0)
         return;
@@ -399,9 +369,7 @@ docont ()
         gen_jump (ptr->case_test);
 }
 
-/**
- * dump switch table
- */
+// dump switch table
 dumpsw (WHILE * ws)
 {
     int i, j;

@@ -1,18 +1,9 @@
-
-//      File io.c: 2.1 (83/03/20,16:02:07) 
-
-/*% cc -O -c %
- *
- */
-
 #include <stdio.h>
 #include <string.h>
 #include "defs.h"
 #include "data.h"
 
-/*
- *      open input file
- */
+// open input file
 openin (p)
 char *p;
 {
@@ -29,9 +20,7 @@ char *p;
 
 }
 
-/*
- *      open output file
- */
+// open output file
 openout ()
 {
     outfname (fname);
@@ -44,9 +33,7 @@ openout ()
 
 }
 
-/*
- *      change input filename to output filename
- */
+// change input filename to output filename
 outfname (s)
 char *s;
 {
@@ -56,9 +43,7 @@ char *s;
 
 }
 
-/**
- * remove NL from filenames
- */
+// remove NL from filenames
 fixname (s)
 char *s;
 {
@@ -69,9 +54,7 @@ char *s;
 
 }
 
-/**
- * check that filename is "*.c"
- */
+// check that filename is "*.c"
 checkname (s)
 char *s;
 {
@@ -109,7 +92,8 @@ readline ()
             line[lptr++] = k;
         }
         line[lptr] = 0;
-        srcln[inclsp]++;        // increment source line number of actual file 
+        // increment source line number of actual file 
+        srcln[inclsp]++;
         if (k <= 0)
             if (input2 != NULL) {
                 input2 = inclstk[--inclsp];
@@ -146,45 +130,30 @@ inchar ()
     return (gch ());
 }
 
-/**
- * gets current char from input line and moves to the next one
- * @return current char
- */
+// gets current char from input line and moves to the next one
 gch ()
 {
     if (ch () == 0)
         return (0);
-    else
-        return (line[lptr++] & 127);
+    return (line[lptr++] & 127);
 }
 
-/**
- * returns next char
- * @return next char
- */
+// returns next char
 nch ()
 {
     if (ch () == 0)
         return (0);
-    else
-        return (line[lptr + 1] & 127);
+    return (line[lptr + 1] & 127);
 }
 
-/**
- * returns current char
- * @return current char
- */
+// returns current char
 ch ()
 {
     return (line[lptr] & 127);
 }
 
-/*
- *      print a carriage return and a string only to console
- *
- */
-pl (str)
-char *str;
+// print a carriage return and a string only to console
+pl (char *str)
 {
     int k;
 

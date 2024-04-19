@@ -1,19 +1,10 @@
-
-//      File preproc.c: 2.3 (84/11/27,11:47:40) 
-
-/*% cc -O -c %
- *
- */
-
 #include <stdio.h>
 #include <string.h>
 #include "defs.h"
 #include "data.h"
 
-/**
- * remove "brackets" surrounding include file name
- * @see DEFLIB
- */
+// remove "brackets" surrounding include file name
+// @see DEFLIB
 FILE *
 fix_include_name ()
 {
@@ -45,9 +36,7 @@ fix_include_name ()
     return (fp);
 }
 
-/**
- * open an include file
- */
+// open include file
 doinclude ()
 {
     char *p;
@@ -65,7 +54,6 @@ doinclude ()
         error ("Could not open include file");
     }
     kill ();
-
 }
 
 /**
@@ -87,7 +75,6 @@ doasm ()
     }
     kill ();
     cmode = 1;
-
 }
 
 dodefine ()
@@ -109,7 +96,6 @@ doundef ()
     if (mp = findmac (sname))
         delmac (mp);
     kill ();
-
 }
 
 preprocess ()
@@ -119,8 +105,7 @@ preprocess ()
     while (cpp ());
 }
 
-doifdef (ifdef)
-int ifdef;
+doifdef (int ifdef)
 {
     char sname[NAMESIZE];
     int k;
@@ -133,7 +118,6 @@ int ifdef;
         && findmac (sname);
     if (k != ifdef)
         skiplevel = iflevel;
-
 }
 
 ifline ()
@@ -169,19 +153,14 @@ ifline ()
         if (!skiplevel)
             return (0);
     }
-
 }
 
 noiferr ()
 {
     error ("no matching #if...");
-
 }
 
-/**
- * preprocess - copies mline to line with special treatment of preprocess cmds
- * @return
- */
+// preprocess - copies mline to line with special treatment of preprocess cmds
 cpp ()
 {
     int k;
@@ -284,7 +263,6 @@ cpp ()
     while (line[lptr++] = mline[mptr++]);
     lptr = 0;
     return (cpped);
-
 }
 
 keepch (c)
@@ -294,7 +272,6 @@ char c;
     if (mptr < MPMAX)
         mptr++;
     return (c);
-
 }
 
 defmac (s)
@@ -328,7 +305,6 @@ addmac ()
     while (putmac (remove_one_line_comment (gch ())));
     if (macptr >= MACMAX)
         error ("macro table full");
-
 }
 
 /**
@@ -342,9 +318,8 @@ char c;
     if ((c == '/') && (ch () == '/')) {
         while (gch ());
         return 0;
-    } else {
-        return c;
     }
+    return c;
 }
 
 delmac (mp)
@@ -354,7 +329,6 @@ int mp;
     --mp;                       // step over previous null 
     while (mp >= 0 && macq[mp])
         macq[mp--] = '%';
-
 }
 
 putmac (c)
@@ -364,7 +338,6 @@ char c;
     if (macptr < MACMAX)
         macptr++;
     return (c);
-
 }
 
 findmac (sname)
@@ -382,7 +355,6 @@ char *sname;
         while (macq[k++]);
     }
     return (0);
-
 }
 
 toggle (name, onoff)

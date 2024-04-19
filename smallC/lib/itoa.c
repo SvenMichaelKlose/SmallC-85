@@ -1,5 +1,7 @@
 #include <stdio.h>
+
 #define EOS 0
+
 itoa (n, s)
 char s[];
 int n;

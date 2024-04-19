@@ -1,11 +1,9 @@
-
 int xxseed;
 
 srand (x)
 int x;
 {
     xxseed = x;
-
 }
 
 rand ()
@@ -14,7 +12,6 @@ rand ()
     if (xxseed < 0)
         xxseed = -xxseed;
     return (xxseed);
-
 }
 
 getrand ()

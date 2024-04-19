@@ -1,8 +1,8 @@
 #include <stdio.h>
 
-// return length of string, reference CPL p 36 
-strlen (s)
-char *s;
+// return length of string,
+// reference CPL p 36 
+strlen (char *s)
 {
     int i;
     i = 0;
