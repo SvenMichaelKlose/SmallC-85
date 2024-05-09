@@ -1,6 +1,11 @@
 Small C (v3.2)
 ==============
 
+THIS PROJECT MOVED INTO
+[TUNIX](git@github.com:SvenMichaelKlose/tunix.git)
+as of 09. May 2024.  Please join there!
+
+
 This is a retargetable one-pass compiler
 for a subset of the C programming
 language.
